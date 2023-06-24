@@ -1,0 +1,51 @@
+html, body {
+    margin: 0;
+}
+  
+  html {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    height: 100%;
+}
+  
+body {
+    overflow: hidden;
+    height: inherit;
+}
+  
+h1 {
+    font-size: 2rem;
+    letter-spacing: -1px;
+    position: absolute;
+    margin: 0;
+    top: -4px;
+    right: 5px;
+  
+    color: transparent;
+    text-shadow: 0 0 4px white;
+}
+button {
+    background-color: white;
+    font-size: 2rem;
+    letter-spacing: -1px;
+   
+    font-family: sans-serif;
+}
+/* button.gruvity {
+  
+} */
+button.force {
+    display: none;
+}
+canvas {
+    z-index: 1;
+}
+.score {
+    color: white;
+    
+}
+.navig {
+    display: flex;
+    position: absolute;
+    top: 4px;
+    left: 5px;
+}
