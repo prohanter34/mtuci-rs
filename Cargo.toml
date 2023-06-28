@@ -2,4 +2,5 @@
 members = [
     "search",
     "server",
+    "homework1",
 ]
