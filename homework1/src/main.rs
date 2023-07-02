@@ -17,7 +17,7 @@ impl Fizzbuzz for i32 {
 }
 
 
-fn main() {
+fn main() { 
 for i in 1..=100 {
     i.fizzbuzz();
 }
