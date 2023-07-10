@@ -4,5 +4,6 @@ members = [
     "server",
     "homework1",
     "homework2",
-    "sandbox"
+    "sandbox",
+    "homework4",
 ]
