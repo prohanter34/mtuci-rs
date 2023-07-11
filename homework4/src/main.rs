@@ -33,7 +33,6 @@ impl<T, const N: usize> Vect<T, N> {
     }
 
     fn get(&self, index: usize) -> &T 
-    // where T: Copy
     {
         if index >= self._length {
             panic!("out of range")
@@ -75,7 +74,7 @@ impl<T, const N: usize> Vect<T, N> {
     fn length(&self) -> usize {
         self._length
     }
-    // не хватает условия !!!!!!  СДЕЛАТЬ!
+
     fn push(&mut self, elment: T) {   
         
         self._length += 1;
@@ -146,7 +145,7 @@ impl<T, const N: usize> Vect<T, N> {
                     None => {panic!("vect is nulll")},
                 }
                 return  last_element;
-            }                                                                   // дописать!!!
+            }
         } else {
             for i in self._data.iter_mut().rev() {
                 match i {
@@ -182,7 +181,7 @@ impl<T, const N: usize> Vect<T, N> {
 
 fn main() {
     // пример: new, push, with_capacity
-    // адекватного нет(((
+    // адекватного вывода нет(((
     let mut a = Vect::new([String::from("de")]); // new должен знать кол-во элементов массива во время компиляции (плохо) 
     a.push("elment".to_string());
     println!("{:?}", a);
