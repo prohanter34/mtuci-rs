@@ -1,4 +1,4 @@
-use std::{fmt::Debug, vec};
+use std::{fmt::Debug, vec, clone};
 
 
 #[derive(Debug)]
@@ -32,14 +32,14 @@ impl<T, const N: usize> Vect<T, N> {
         }
     }
 
-    fn get_value(&self, index: usize) -> &T 
+    fn get(&self, index: usize) -> &T 
     // where T: Copy
     {
         if index >= self._length {
             panic!("out of range")
         } else if index >= self._data.len() {
             if let Some(e) = self._path.as_ref() {
-                e.get_value(index - self._data.len())
+                e.get(index - self._data.len())
             } else {
                 panic!("out of range")
             }
@@ -51,12 +51,12 @@ impl<T, const N: usize> Vect<T, N> {
         }
     }
 
-    fn get_mut_value(&mut self, index: usize) -> &mut T {
+    fn get_mut(&mut self, index: usize) -> &mut T {
         if index >= self._length {
             panic!("out of range")
         } else if index >= self._data.len() {
             if let Some(e) = self._path.as_mut() {
-                e.get_mut_value(index - self._data.len())
+                e.get_mut(index - self._data.len())
             } else {
                 panic!("out of range")
             }
@@ -79,13 +79,22 @@ impl<T, const N: usize> Vect<T, N> {
     fn push(&mut self, elment: T) {   
         
         self._length += 1;
-
+        
         if let Some(e) = self._path.as_mut() {
             if self._length > self._capacity {
                 self._capacity += N;
             }
-            e.push(elment);
-           
+            if let Some(Some(_)) = self._data.last() {
+                e.push(elment);
+            } else {
+                for i in self._data.iter_mut() {
+                    if let None = i {
+                        *i = Some(elment);
+                        break;
+                    }
+                }
+            }
+            
         } else if let None = self._path.as_mut() {
 
             if self._length > self._capacity {
@@ -114,39 +123,61 @@ impl<T, const N: usize> Vect<T, N> {
         
     }
 
-    fn pop(&mut self) -> &T {
-        
+    fn pop(&mut self) -> T where T: Copy
+    {   
+        self._length -= 1;
+        let last_element: T;
         if let Some(Some(e)) = self._data.last() {
             if let Some(el) = self._path.as_mut() {
-                el.pop()
+                if let Some(Some(_)) = el._data.first() {
+                    el.pop()
+                } else {
+                    last_element = *e;
+                    match self._data.last_mut() {
+                        Some(e) => *e = None,
+                        None => {panic!("vect is nulll")},
+                    }
+                return  last_element;
+                }
             } else {
-                e
+                last_element = *e;
+                match self._data.last_mut() {
+                    Some(e) => *e = None,
+                    None => {panic!("vect is nulll")},
+                }
+                return  last_element;
             }                                                                   // дописать!!!
         } else {
-            for i in self._data.iter().rev() {
-                return match i {
-                    Some(e) => {e},
+            for i in self._data.iter_mut().rev() {
+                match i {
+                    Some(e) => {
+                        last_element = *e;
+                        *i = None;
+                        return last_element;
+                    },
                     None => continue,
                 }
             }
             panic!("vect is null")
         }
+        
     }
 
+    
     fn remove(&mut self, index: usize) -> T {
         todo!()
     }
 
-    fn get(&self) {
-        todo!()
-    }
-
-    fn resize(&self) {
-        todo!()
+    fn resize(&mut self, new_len: usize, value: T) where T: Copy {
+        while self._length > new_len {
+            self.pop();
+        }
+        while self._length < new_len {
+            self.push(value);
+        }
     }
 
 }
-
 
 
 fn main() {
@@ -164,10 +195,14 @@ fn main() {
     a.push(5); 
     println!("{}", a.capacity()); 
     println!("{}", a.length()); 
-    println!("{}", a.get_value(0));
-    println!("{}", a.get_value(3));
-    println!("{}", a.get_value(4));
+    println!("{}", a.get(3));
     println!("{:?}", a);
-    *a.get_mut_value(0) = 100;
-    println!("{}", a.get_value(0));
+    *a.get_mut(0) = 100;
+    println!("{}", a.get(0));
+    println!("{}", a.pop());
+    println!("{}", a.pop());
+    a.push(7);
+    println!("{:?}", a);
+    a.resize(2, 0);
+    println!("{:?}", a);
 }
