@@ -6,5 +6,5 @@ members = [
     "homework2",
     "sandbox",
     "homework4",
-    "myHashMap",
+    "my_hash_map",
 ]
